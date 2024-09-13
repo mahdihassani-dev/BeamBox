@@ -98,34 +98,34 @@ class LocalNetworkConnectionFragment : BaseCoroutineStateFragment<LocalNetworkCo
     override fun CoroutineScope.bindContentViewCoroutine(contentView: View) {
         val viewBinding = LocalNetworkConnectionFragmentBinding.bind(contentView)
 
-        val addressAdapterBuilder = SimpleAdapterBuilderImpl<Pair<InetAddress, Boolean>>(
-            itemViewCreator = SingleItemViewCreatorImpl(R.layout.local_address_item_layout),
-            dataSource = FlowDataSourceImpl(
-                dataFlow = stateFlow
-                    .map {
-                        val selected = it.selectedAddress.getOrNull()
-                        val available = it.availableAddresses
-                        available.map { address ->
-                            address to (address == selected)
-                        }
-                    },
-                areDataItemsTheSameParam = { d1, d2 -> d1.first == d2.first },
-                getDataItemsChangePayloadParam = { d1, d2 -> if (d1.first == d2.first && d1.second != d2.second) Unit else null }
-            ),
-            dataBinder = DataBinderImpl<Pair<InetAddress, Boolean>> { data, view, _ ->
-                val itemViewBinding = LocalAddressItemLayoutBinding.bind(view)
-                itemViewBinding.addressTv.text = data.first.toString().removePrefix("/")
-                itemViewBinding.root.clicks(this@bindContentViewCoroutine) {
-                    updateState { s ->
-                        s.copy(selectedAddress = Optional.of(data.first))
-                    }
-                }
-            }.addPayloadDataBinder(Unit) { data, view, _ ->
-                val itemViewBinding = LocalAddressItemLayoutBinding.bind(view)
-                itemViewBinding.addressRb.isChecked = data.second
-            }
-        )
-        viewBinding.localAddressesRv.adapter = addressAdapterBuilder.build()
+//        val addressAdapterBuilder = SimpleAdapterBuilderImpl<Pair<InetAddress, Boolean>>(
+//            itemViewCreator = SingleItemViewCreatorImpl(R.layout.local_address_item_layout),
+//            dataSource = FlowDataSourceImpl(
+//                dataFlow = stateFlow
+//                    .map {
+//                        val selected = it.selectedAddress.getOrNull()
+//                        val available = it.availableAddresses
+//                        available.map { address ->
+//                            address to (address == selected)
+//                        }
+//                    },
+//                areDataItemsTheSameParam = { d1, d2 -> d1.first == d2.first },
+//                getDataItemsChangePayloadParam = { d1, d2 -> if (d1.first == d2.first && d1.second != d2.second) Unit else null }
+//            ),
+//            dataBinder = DataBinderImpl<Pair<InetAddress, Boolean>> { data, view, _ ->
+//                val itemViewBinding = LocalAddressItemLayoutBinding.bind(view)
+//                itemViewBinding.addressTv.text = data.first.toString().removePrefix("/")
+//                itemViewBinding.root.clicks(this@bindContentViewCoroutine) {
+//                    updateState { s ->
+//                        s.copy(selectedAddress = Optional.of(data.first))
+//                    }
+//                }
+//            }.addPayloadDataBinder(Unit) { data, view, _ ->
+//                val itemViewBinding = LocalAddressItemLayoutBinding.bind(view)
+//                itemViewBinding.addressRb.isChecked = data.second
+//            }
+//        )
+//        viewBinding.localAddressesRv.adapter = addressAdapterBuilder.build()
 
         // Scan QrCode
         viewBinding.scanQrCodeLayout.clicks(this) {
@@ -191,51 +191,51 @@ class LocalNetworkConnectionFragment : BaseCoroutineStateFragment<LocalNetworkCo
             }
         }
 
-        // Search Servers
-        viewBinding.searchServerLayout.clicks(this) {
-            val selectedAddress = currentState().selectedAddress.getOrNull()
-            if (selectedAddress != null) {
-                val remoteDevice =
-                    childFragmentManager.showBroadcastReceiverDialogSuspend(selectedAddress)
-                if (remoteDevice != null) {
-                    withContext(Dispatchers.Main.immediate) {
-                        startActivity(
-                            FileTransportActivity.getIntent(
-                                context = requireContext(),
-                                localAddress = selectedAddress,
-                                remoteAddress = remoteDevice.remoteAddress.address,
-                                remoteDeviceInfo = remoteDevice.deviceName,
-                                isServer = false,
-                                requestShareFiles = (requireActivity() as ConnectionActivity).consumeRequestShareFiles()
-                            )
-                        )
-                    }
-                }
-            }
-        }
-
-        // As Server
-        viewBinding.asServerLayout.clicks(this) {
-            val selectedAddress = currentState().selectedAddress.getOrNull()
-            if (selectedAddress != null) {
-                val remoteDevice = withContext(Dispatchers.Main) {
-                    childFragmentManager.showBroadcastSenderDialogSuspend(selectedAddress)
-                }
-                if (remoteDevice != null) {
-                    withContext(Dispatchers.Main.immediate) {
-                        startActivity(
-                            FileTransportActivity.getIntent(
-                                context = requireContext(),
-                                localAddress = selectedAddress,
-                                remoteAddress = remoteDevice.remoteAddress.address,
-                                remoteDeviceInfo = remoteDevice.deviceName,
-                                isServer = true,
-                                requestShareFiles = (requireActivity() as ConnectionActivity).consumeRequestShareFiles()
-                            ))
-                    }
-                }
-            }
-        }
+//        // Search Servers
+//        viewBinding.searchServerLayout.clicks(this) {
+//            val selectedAddress = currentState().selectedAddress.getOrNull()
+//            if (selectedAddress != null) {
+//                val remoteDevice =
+//                    childFragmentManager.showBroadcastReceiverDialogSuspend(selectedAddress)
+//                if (remoteDevice != null) {
+//                    withContext(Dispatchers.Main.immediate) {
+//                        startActivity(
+//                            FileTransportActivity.getIntent(
+//                                context = requireContext(),
+//                                localAddress = selectedAddress,
+//                                remoteAddress = remoteDevice.remoteAddress.address,
+//                                remoteDeviceInfo = remoteDevice.deviceName,
+//                                isServer = false,
+//                                requestShareFiles = (requireActivity() as ConnectionActivity).consumeRequestShareFiles()
+//                            )
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//
+//        // As Server
+//        viewBinding.asServerLayout.clicks(this) {
+//            val selectedAddress = currentState().selectedAddress.getOrNull()
+//            if (selectedAddress != null) {
+//                val remoteDevice = withContext(Dispatchers.Main) {
+//                    childFragmentManager.showBroadcastSenderDialogSuspend(selectedAddress)
+//                }
+//                if (remoteDevice != null) {
+//                    withContext(Dispatchers.Main.immediate) {
+//                        startActivity(
+//                            FileTransportActivity.getIntent(
+//                                context = requireContext(),
+//                                localAddress = selectedAddress,
+//                                remoteAddress = remoteDevice.remoteAddress.address,
+//                                remoteDeviceInfo = remoteDevice.deviceName,
+//                                isServer = true,
+//                                requestShareFiles = (requireActivity() as ConnectionActivity).consumeRequestShareFiles()
+//                            ))
+//                    }
+//                }
+//            }
+//        }
     }
 
     private val updateAddressLock: Mutex by lazy {

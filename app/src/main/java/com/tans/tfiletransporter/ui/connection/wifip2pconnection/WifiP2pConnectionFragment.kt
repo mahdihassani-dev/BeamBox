@@ -9,11 +9,7 @@ import android.net.wifi.p2p.*
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.getSystemService
-import androidx.core.view.isEmpty
-import com.airbnb.lottie.Lottie
-import com.airbnb.lottie.LottieAnimationView
 import com.tans.tfiletransporter.R
 import com.tans.tfiletransporter.databinding.RemoteServerItemLayoutBinding
 import com.tans.tfiletransporter.databinding.WifiP2pConnectionFragmentBinding
@@ -29,7 +25,7 @@ import com.tans.tfiletransporter.transferproto.p2pconn.transferFileSuspend
 import com.tans.tfiletransporter.transferproto.p2pconn.waitClose
 import com.tans.tfiletransporter.transferproto.p2pconn.waitHandshaking
 import com.tans.tfiletransporter.ui.connection.ConnectionActivity
-import com.tans.tfiletransporter.ui.connection.home.EventListener
+import com.tans.tfiletransporter.ui.connection.EventListener
 import com.tans.tfiletransporter.ui.filetransport.FileTransportActivity
 import com.tans.tuiutils.adapter.impl.builders.SimpleAdapterBuilderImpl
 import com.tans.tuiutils.adapter.impl.databinders.DataBinderImpl
@@ -46,12 +42,13 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import java.net.InetAddress
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
-class WifiP2pConnectionFragment : BaseCoroutineStateFragment<WifiP2pConnectionFragment.Companion.WifiP2pConnectionState>(defaultState = WifiP2pConnectionState()) {
+class WifiP2pConnectionFragment(private val onClick: EventListener) : BaseCoroutineStateFragment<WifiP2pConnectionFragment.Companion.WifiP2pConnectionState>(defaultState = WifiP2pConnectionState()) {
 
     private val wifiP2pManager: WifiP2pManager by lazy {
         requireActivity().getSystemService()!!
@@ -285,6 +282,10 @@ class WifiP2pConnectionFragment : BaseCoroutineStateFragment<WifiP2pConnectionFr
     override fun CoroutineScope.bindContentViewCoroutine(contentView: View) {
         val viewBinding = WifiP2pConnectionFragmentBinding.bind(contentView)
 
+        viewBinding.btnRequestQr.setOnClickListener {
+            onClick.onQrBtnClicked()
+        }
+
         renderStateNewCoroutine({ it.p2pHandshake.getOrNull() to it.connectionStatus }) { (handshake, status) ->
             if (handshake != null) {
                 viewBinding.remoteConnectedDeviceTv.text = getString(R.string.wifi_p2p_connection_remote_device,
@@ -297,16 +298,15 @@ class WifiP2pConnectionFragment : BaseCoroutineStateFragment<WifiP2pConnectionFr
 
         renderStateNewCoroutine({ it.wifiP2PConnection.getOrNull() to it.p2pHandshake.getOrNull() }) { (wifiP2pConnection, handshake) ->
             if (wifiP2pConnection != null) {
-                Toast.makeText(context, "wifip2p is not null", Toast.LENGTH_SHORT).show()
                 viewBinding.connectedActionsLayout.visibility = View.VISIBLE
                 viewBinding.remoteDevicesRv.visibility = View.GONE
                 viewBinding.containerSearch.visibility = View.GONE
+                viewBinding.progressConnection.visibility = View.GONE
+
                 if (handshake != null) {
                     viewBinding.transferFileLayout.visibility = View.VISIBLE
-                    Toast.makeText(context, "handshake is not null", Toast.LENGTH_SHORT).show()
                 } else {
                     viewBinding.transferFileLayout.visibility = View.INVISIBLE
-                    Toast.makeText(context, "handshake is null", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 viewBinding.connectedActionsLayout.visibility = View.GONE
@@ -352,6 +352,9 @@ class WifiP2pConnectionFragment : BaseCoroutineStateFragment<WifiP2pConnectionFr
                     if (connectionMutex.isLocked) { return@clicks }
                     connectionMutex.lock()
                     val connection = currentState().wifiP2PConnection.getOrNull()
+                    withContext(Dispatchers.Main){
+                        viewBinding.progressConnection.visibility = View.VISIBLE
+                    }
                     if (connection == null) {
                         val config = WifiP2pConfig()
                         config.deviceAddress = data.macAddress
@@ -363,9 +366,10 @@ class WifiP2pConnectionFragment : BaseCoroutineStateFragment<WifiP2pConnectionFr
                             AndroidLog.d(TAG, "Connection group address: ${connectionInfo?.groupOwnerAddress}, is group owner: ${connectionInfo?.isGroupOwner}")
                         } else {
                             updateState { it.copy(connectionStatus = ConnectionStatus.NoConnection) }
-                            AndroidLog.e(TAG, "Request P2P connection fail: $state !!!")
-                        }
+                            AndroidLog.e(TAG, "Request P2P connection fail: $state !!!")}
+
                     }
+
                     connectionMutex.unlock()
                 }
             }
@@ -455,6 +459,12 @@ class WifiP2pConnectionFragment : BaseCoroutineStateFragment<WifiP2pConnectionFr
             val connectionStatus: ConnectionStatus = ConnectionStatus.NoConnection
         )
     }
+
+    private fun showQrOptionDialog() {
+        // Create and show the DialogFragment
+    }
+
+
 
 
 }
