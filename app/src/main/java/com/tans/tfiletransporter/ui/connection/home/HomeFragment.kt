@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.tans.tfiletransporter.databinding.HomeFragmentBinding
+import com.tans.tfiletransporter.ui.connection.EventListener
 
 class HomeFragment(private val onEventListener: EventListener) : Fragment() {
 

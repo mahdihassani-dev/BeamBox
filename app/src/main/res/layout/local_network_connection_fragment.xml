@@ -1,113 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
-    <TextView
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="32dp"
+        android:src="@drawable/baseline_qr_code_24"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/black_2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/local_network_connection_title"
-        android:textSize="16sp"
-        android:textColor="@color/black_1"/>
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <FrameLayout
+            android:id="@+id/scan_qr_code_layout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/common_line_button_color_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/local_network_scan_qr_code"
+                android:textColor="?colorPrimary"
+                android:textSize="18sp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/show_qr_code_layout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/common_line_button_color_bg">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/local_network_show_qr_code"
+                android:textColor="?colorPrimary"
+                android:textSize="18sp" />
+
+        </FrameLayout>
+
+    </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:lineSpacingExtra="5dp"
-        android:text="@string/local_network_connection_description"
-        android:textSize="14sp"
-        android:textColor="@color/gray_1"/>
-
-    <TextView
-        android:id="@+id/local_address_tv"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        android:textColor="@color/gray_1"
-        android:text="@string/local_network_local_address" />
+        android:text="NOTE : in QR connection both devices should be connected to the same network"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
+        />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/local_addresses_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="3"
-        tools:listitem="@layout/local_address_item_layout"/>
 
-    <FrameLayout
-        android:id="@+id/scan_qr_code_layout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/common_line_button_color_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/local_network_scan_qr_code"
-            android:textSize="18sp"
-            android:textColor="?colorPrimary"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/show_qr_code_layout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/common_line_button_color_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/local_network_show_qr_code"
-            android:textSize="18sp"
-            android:textColor="?colorPrimary"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/search_server_layout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/common_line_button_color_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/broadcast_connection_as_receiver"
-            android:textSize="18sp"
-            android:textColor="?colorPrimary"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/as_server_layout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/common_line_button_color_bg">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/broadcast_connection_as_sender"
-            android:textSize="18sp"
-            android:textColor="?colorPrimary"/>
-
-    </FrameLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

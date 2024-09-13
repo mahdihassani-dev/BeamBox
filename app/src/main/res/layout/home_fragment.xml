@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_find_friend"
-        android:layout_above="@id/txt_find_friend"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
 
@@ -36,7 +36,7 @@
         android:textColor="@color/black_1"
         android:textSize="24sp"
         android:layout_marginTop="8dp"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/img_find_friend"
         android:gravity="center_horizontal"/>
 
 
