@@ -7,11 +7,11 @@ plugins {
 
 android {
 
-    namespace = "com.tans.tfiletransporter"
+    namespace = "com.tans.beambox"
     compileSdk = properties["ANDROID_COMPILE_SDK"].toString().toInt()
 
     defaultConfig {
-        applicationId = "com.tans.tfiletransporter"
+        applicationId = "com.tans.beambox"
         minSdk = properties["ANDROID_MIN_SDK"].toString().toInt()
         targetSdk = properties["ANDROID_TARGET_SDK"].toString().toInt()
         versionCode = properties["VERSION_CODE"].toString().toInt()
@@ -124,6 +124,9 @@ dependencies {
     implementation(project(":net"))
 
     implementation(libs.androidx.cardview)
+
+    // tapsell
+    implementation(libs.ir.tapsell.plus.sdk.android)
 
 
 
