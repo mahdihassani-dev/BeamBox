@@ -308,7 +308,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialiconsround/check_circle/round_check_circle_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/star_rate/baseline_star_rate_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -319,7 +319,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="round_check_circle_24" />
+                            <entry key="outputName" value="baseline_star_rate_24" />
                             <entry key="sourceFile" value="C:\Users\mahdi\Downloads\ic_search_friend.svg" />
                           </map>
                         </option>

@@ -244,3 +244,25 @@
 -dontwarn sun.security.x509.X500Name
 -dontwarn sun.security.x509.X509CertImpl
 -dontwarn sun.security.x509.X509CertInfo
+
+-dontwarn com.adivery.data.*
+-dontwarn com.chartboost.sdk.*
+-dontwarn com.chartboost.sdk.Libraries.*
+-dontwarn com.chartboost.sdk.Model.*
+-dontwarn com.adcolony.sdk.*
+-dontwarn com.google.ads.interactivemedia.v3.api.*
+-dontwarn com.google.ads.interactivemedia.v3.api.*.*
+-dontwarn com.google.android.gms.ads.*
+-dontwarn com.google.common.*.*
+-dontwarn com.unity3d.*.*
+-dontwarn com.unity3d.*.*.*
+-dontwarn com.google.android.gms.ads.*.*
+-dontwarn com.ironsource.mediationsdk.*
+-dontwarn com.ironsource.mediationsdk.*.*
+-dontwarn com.mbridge.msdk.*
+-dontwarn com.mbridge.msdk.*.*
+-dontwarn com.mbridge.msdk.video.bt.module.b.*
+-dontwarn com.mbridge.msdk.newinterstitial.*.*
+-dontwarn com.startapp.sdk.*.*
+-dontwarn com.startapp.sdk.adsbase.*.*
+-dontwarn com.google.android.gms.internal.ads.*

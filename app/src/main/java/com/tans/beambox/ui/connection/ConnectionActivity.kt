@@ -4,12 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.*
+import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.provider.UserDictionary.Words.APP_ID
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
@@ -20,23 +21,24 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import com.adivery.sdk.Adivery
+import com.adivery.sdk.AdiveryAdListener
+import com.adivery.sdk.AdiveryBannerAdView
 import com.tans.beambox.R
 import com.tans.beambox.databinding.ConnectionActivityBinding
+import com.tans.beambox.databinding.HomeFragmentBinding
 import com.tans.beambox.logs.AndroidLog
 import com.tans.beambox.ui.commomdialog.showOptionalDialogSuspend
 import com.tans.beambox.ui.commomdialog.showSettingsDialog
 import com.tans.beambox.ui.connection.home.HomeFragment
 import com.tans.beambox.ui.connection.localconnetion.LocalNetworkConnectionFragment
 import com.tans.beambox.ui.connection.wifip2pconnection.WifiP2pConnectionFragment
+import com.tans.beambox.utils.Constants
 import com.tans.beambox.utils.uri2FileReal
 import com.tans.tuiutils.activity.BaseCoroutineStateActivity
 import com.tans.tuiutils.permission.permissionsRequestSuspend
 import com.tans.tuiutils.systembar.annotation.SystemBarStyle
 import com.tans.tuiutils.view.clicks
-import ir.tapsell.plus.TapsellPlus
-import ir.tapsell.plus.TapsellPlusInitListener
-import ir.tapsell.plus.model.AdNetworkError
-import ir.tapsell.plus.model.AdNetworks
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -67,27 +69,11 @@ class ConnectionActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Adivery.configure(application, Constants.ADIVERY_APP_ID);
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         checkIntentAction(intent)
 
-        TapsellPlus.initialize(
-            this, "KEY",
-            object : TapsellPlusInitListener {
-                override fun onInitializeSuccess(adNetworks: AdNetworks) {
-                    Log.d("onInitializeSuccess", adNetworks.name)
-                }
-
-                override fun onInitializeFailed(
-                    adNetworks: AdNetworks,
-                    adNetworkError: AdNetworkError
-                ) {
-                    Log.e(
-                        "onInitializeFailed",
-                        "ad network: " + adNetworks.name + ", error: " + adNetworkError.errorMessage
-                    )
-                }
-            })
     }
 
     override fun onResume() {
@@ -101,6 +87,7 @@ class ConnectionActivity :
 
         // Reset the flag so that dialog does not show on the first launch
         sharedPreferences.edit().putBoolean(KEY_DIALOG_SHOWN, false).apply()
+
     }
 
 
@@ -108,6 +95,7 @@ class ConnectionActivity :
         onBackPressedDispatcher.addCallback {
             finish()
         }
+
     }
 
     override fun CoroutineScope.bindContentViewCoroutine(contentView: View) {
@@ -176,6 +164,8 @@ class ConnectionActivity :
             )
         }
         homeTransaction.commitAllowingStateLoss()
+
+
 
 
         renderStateNewCoroutine({ it.requestShareFiles }) { requestShareFiles ->
@@ -357,7 +347,7 @@ class ConnectionActivity :
 
 
     companion object {
-        private const val TAG = "ConnectionActivity"
+        private const val TAG = "ConnectionActivityDebug"
 
 
         private const val WIFI_P2P_CONNECTION_FRAGMENT_TAG = "WIFI_P2P_CONNECTION_FRAGMENT_TAG"

@@ -107,6 +107,8 @@
     <!--region Media-->
     <string name="media_artist_name">Artist: %s</string>
     <string name="media_album_name">Album: %s</string>
+    <string name="help">Help</string>
+    <string name="rate_us">Rate us</string>
     <!--endregion-->
 
 </resources>

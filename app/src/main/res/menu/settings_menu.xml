@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/settings"
-          android:title="@string/settings_title"
-          android:icon="@drawable/ic_settings"
-          app:showAsAction="always"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings_title" />
+
+    <item
+        android:id="@+id/guide"
+        android:icon="@drawable/baseline_help_24"
+        android:title="@string/help" />
+
+    <item android:id="@+id/rate"
+        android:icon="@drawable/baseline_star_rate_24"
+        android:title="@string/rate_us"/>
+
 </menu>

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.tans.beambox"
-        minSdk = properties["ANDROID_MIN_SDK"].toString().toInt()
+        minSdk = 24
         targetSdk = properties["ANDROID_TARGET_SDK"].toString().toInt()
         versionCode = properties["VERSION_CODE"].toString().toInt()
         versionName = properties["VERSION_NAME"].toString()
@@ -125,8 +125,7 @@ dependencies {
 
     implementation(libs.androidx.cardview)
 
-    // tapsell
-    implementation(libs.ir.tapsell.plus.sdk.android)
+    implementation(libs.sdk)
 
 
 
